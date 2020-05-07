@@ -6,13 +6,27 @@ function decomposeIntoFactors(num){
 		number : 0,
 		factor : [],
 		degree : []
-	};
+	}
 	answer.number = num;
 	let remain = num;
-	let primeNumbers = [2, 3, 5, 7, 11];
-	let squaredPrime = [4, 9, 25, 49, 121];
+	let primeNumbers = [2, 3];
+	let squaredPrime = [4, 9];
 	let i = 0;
-	do{
+	if(!countDegree()){
+		i = 1;
+		while(remain >= squaredPrime[i]){
+			if(countDegree()) break;
+			nextPrime();
+			i++;
+		}
+	}
+	if(remain != 1){
+		answer.factor.push(remain);
+		answer.degree.push(1);
+	}
+	return answer;
+
+	function countDegree(){
 		let j = 0;
 		while(remain % primeNumbers[i] == 0){
 			remain /= primeNumbers[i];
@@ -22,34 +36,26 @@ function decomposeIntoFactors(num){
 			answer.factor.push(primeNumbers[i]);
 			answer.degree.push(j);
 		}
-		i++;
-		if(i > primeNumbers.length - 1) nextPrime();
-	}while(remain >= squaredPrime[i]);
-	if(remain != 1){
-		answer.factor.push(remain);
-		answer.degree.push(1);
-	};
-	return answer;
-	
-	function lastItemArr(arr) {
-		return arr[arr.length - 1];
+		if(remain == 1) {return true} else {return false};
 	}
+	
 	function nextPrime(){
-		let pr = lastItemArr(primeNumbers);
+		let pr = primeNumbers[primeNumbers.length - 1];
 		let i = 1;
-		let chek = true;
+		let chek = false;
 		do{
 			pr += 2;
 			i = 1;
-			chek = true;
+			chek = false;
 			while(pr >= squaredPrime[i]){
-				if(pr % primeNumbers[i] == 0) {chek = false; break;}
+				if(pr % primeNumbers[i] == 0) {chek = true; break;}
 				i++;
 			}
-		}while(!chek);
+		}while(chek);
 		primeNumbers.push(pr);
 		squaredPrime.push(pr ** 2);
 	}
+
 }
 //-- end of function decomposeIntoFactors ---------------------------------
 
@@ -69,9 +75,14 @@ btn.onclick=function(){
 		wasError = false;
 	}
 	let ans = decomposeIntoFactors(ante);
-	let htmMes = ans.number + ' =';
-	for(let i = 0; i < ans.factor.length; i++){
-		htmMes += (i > 0 ? ' × ': ' ') + ans.factor[i] + (ans.degree[i] > 1 ? '<sup>' + ans.degree[i] + '</sup>' : '')
+	let htmMes = ans.number;
+	if(ans.number == ans.factor[0]){
+		htmMes += ' - это простое число.';
+	}else{
+		htmMes += ' =';
+		for(let i = 0; i < ans.factor.length; i++){
+			htmMes += (i > 0 ? ' × ': ' ') + ans.factor[i] + (ans.degree[i] > 1 ? '<sup>' + ans.degree[i] + '</sup>' : '')
+		}
 	}
 	out.innerHTML = htmMes;
 }
