@@ -9,15 +9,33 @@ function decomposeIntoFactors(num){
 	}
 	answer.number = num;
 	let remain = num;
+	let sqrtRemain = sqRound(remain);
+	let limitRec = sqRound(sqrtRemain);
+	let needRec = true;
 	let primeNumbers = [2, 3];
-	let squaredPrime = [4, 9];
-	let i = 0;
+	let actualPrime = 2;
+	let countSqPrime = 1;
+	let squaredPrime = 9;
 	if(!countDegree()){
-		i = 1;
-		while(remain >= squaredPrime[i]){
+		actualPrime = 3;
+		while(sqrtRemain >= actualPrime){
 			if(countDegree()) break;
-			nextPrime();
-			i++;
+			let chek = false;
+			do{
+				chek = false;
+				actualPrime += 2;
+				if(actualPrime >= squaredPrime) squaredPrime = (primeNumbers[++countSqPrime]) ** 2;
+				for(let i=1; i <= countSqPrime; i++){
+					if(actualPrime % primeNumbers[i] == 0) {chek = true; break}
+				}
+			}while(chek);
+			if(needRec){
+				if(limitRec < actualPrime){
+					needRec = false;
+				}else{
+					primeNumbers.push(actualPrime);
+				}
+			}
 		}
 	}
 	if(remain != 1){
@@ -28,35 +46,30 @@ function decomposeIntoFactors(num){
 
 	function countDegree(){
 		let j = 0;
-		while(remain % primeNumbers[i] == 0){
-			remain /= primeNumbers[i];
+		while(remain % actualPrime == 0){
+			remain /= actualPrime;
 			j++;
 		}
 		if(j > 0){
-			answer.factor.push(primeNumbers[i]);
+			answer.factor.push(actualPrime);
 			answer.degree.push(j);
-		}
-		if(remain == 1) {return true} else {return false};
-	}
-	
-	function nextPrime(){
-		let pr = primeNumbers[primeNumbers.length - 1];
-		let i = 1;
-		let chek = false;
-		do{
-			pr += 2;
-			i = 1;
-			chek = false;
-			while(pr >= squaredPrime[i]){
-				if(pr % primeNumbers[i] == 0) {chek = true; break;}
-				i++;
+			if(remain == 1) {return true;
+			}else{
+				sqrtRemain = sqRound(remain);
+				if(needRec) {
+					limitRec= sqRound(sqrtRemain);
+					if(limitRec < actualPrime) needRec = false;
+				}
+				return false};
 			}
-		}while(chek);
-		primeNumbers.push(pr);
-		squaredPrime.push(pr ** 2);
-	}
+			return false;
+		}
 
-}
+		function sqRound(x){
+			return Math.ceil(Math.sqrt(x)) + 5;
+		}
+
+	}
 //-- end of function decomposeIntoFactors ---------------------------------
 
 let out = document.getElementById('out');
