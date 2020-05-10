@@ -3,10 +3,11 @@ function decomposeIntoFactors(num){
 	Функция возвращает объект содержащий число и два массива с множителями и их степенями
 	*/
 	let answer = {
-		number : 0,
+		number : 1,
 		factor : [],
 		degree : []
 	}
+	if(num == 1){answer.factor[0] = 1; return answer};
 	answer.number = num;
 	let remain = num;
 	let sqrtRemain = sqRound(remain);
@@ -30,11 +31,8 @@ function decomposeIntoFactors(num){
 				}
 			}while(chek);
 			if(needRec){
-				if(limitRec < actualPrime){
-					needRec = false;
-				}else{
-					primeNumbers.push(actualPrime);
-				}
+				primeNumbers.push(actualPrime);
+				if(limitRec < actualPrime) needRec = false;
 			}
 		}
 	}
@@ -58,7 +56,6 @@ function decomposeIntoFactors(num){
 				sqrtRemain = sqRound(remain);
 				if(needRec) {
 					limitRec= sqRound(sqrtRemain);
-					if(limitRec < actualPrime) needRec = false;
 				}
 				return false};
 			}
@@ -66,7 +63,7 @@ function decomposeIntoFactors(num){
 		}
 
 		function sqRound(x){
-			return Math.ceil(Math.sqrt(x)) + 5;
+			return Math.ceil(Math.sqrt(x));
 		}
 
 	}
