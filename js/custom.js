@@ -8,65 +8,54 @@ function decomposeIntoFactors(num){
 		degree : []
 	}
 	if(num == 1){answer.factor[0] = 1; return answer};
+
 	answer.number = num;
 	let remain = num;
 	let sqrtRemain = sqRound(remain);
-	let limitRec = sqRound(sqrtRemain);
-	let needRec = true;
-	let primeNumbers = [2, 3];
-	let actualPrime = 2;
-	let countSqPrime = 1;
-	let squaredPrime = 9;
-	if(!countDegree()){
-		actualPrime = 3;
-		while(sqrtRemain >= actualPrime){
-			if(countDegree()) break;
-			let chek = false;
-			do{
-				chek = false;
-				actualPrime += 2;
-				if(actualPrime >= squaredPrime) squaredPrime = (primeNumbers[++countSqPrime]) ** 2;
-				for(let i=1; i <= countSqPrime; i++){
-					if(actualPrime % primeNumbers[i] == 0) {chek = true; break}
-				}
-			}while(chek);
-			if(needRec){
-				primeNumbers.push(actualPrime);
-				if(limitRec < actualPrime) needRec = false;
-			}
-		}
+	let degree = 0;
+	let currentNum = 1;
+	let remNotOne = true;
+
+	if(remain % 2 == 0){
+		do{
+			remain /= 2;
+			degree++;
+		}while(remain % 2 == 0);
+		answer.factor.push(2);
+		answer.degree.push(degree);
+		remNotOne = remain != 1;
+		if(remNotOne) sqrtRemain = sqRound(remain);
 	}
-	if(remain != 1){
+	if(remNotOne){
+		do{
+			currentNum += 2;
+			if(remain % currentNum != 0) continue;
+			degree = 0;
+			do{
+				remain /= currentNum;
+				degree++;
+			}while(remain % currentNum == 0);
+			answer.factor.push(currentNum);
+			answer.degree.push(degree);
+			remNotOne = remain != 1;
+			if(remNotOne){
+				sqrtRemain = sqRound(remain);
+			}else{
+				break;
+			}
+		}while(sqrtRemain >= currentNum);
+	}
+	if(remNotOne){
 		answer.factor.push(remain);
 		answer.degree.push(1);
 	}
 	return answer;
 
-	function countDegree(){
-		let j = 0;
-		while(remain % actualPrime == 0){
-			remain /= actualPrime;
-			j++;
-		}
-		if(j > 0){
-			answer.factor.push(actualPrime);
-			answer.degree.push(j);
-			if(remain == 1) {return true;
-			}else{
-				sqrtRemain = sqRound(remain);
-				if(needRec) {
-					limitRec= sqRound(sqrtRemain);
-				}
-				return false};
-			}
-			return false;
-		}
-
-		function sqRound(x){
-			return Math.ceil(Math.sqrt(x));
-		}
-
+	function sqRound(x){
+		return Math.ceil(Math.sqrt(x));
 	}
+
+}
 //-- end of function decomposeIntoFactors ---------------------------------
 
 let out = document.getElementById('out');
