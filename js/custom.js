@@ -12,44 +12,33 @@ function decomposeIntoFactors(num){
 	answer.number = num;
 	let remain = num;
 	let sqrtRemain = sqRound(remain);
-	let degree = 0;
-	let currentNum = 1;
-	let remNotOne = true;
+	let currentNum = 2;
 
-	if(remain % 2 == 0){
-		do{
-			remain /= 2;
-			degree++;
-		}while(remain % 2 == 0);
-		answer.factor.push(2);
-		answer.degree.push(degree);
-		remNotOne = remain != 1;
-		if(remNotOne) sqrtRemain = sqRound(remain);
-	}
-	if(remNotOne){
-		do{
-			currentNum += 2;
-			if(remain % currentNum != 0) continue;
-			degree = 0;
-			do{
-				remain /= currentNum;
-				degree++;
-			}while(remain % currentNum == 0);
-			answer.factor.push(currentNum);
-			answer.degree.push(degree);
-			remNotOne = remain != 1;
-			if(remNotOne){
-				sqrtRemain = sqRound(remain);
-			}else{
-				break;
-			}
-		}while(sqrtRemain >= currentNum);
-	}
-	if(remNotOne){
-		answer.factor.push(remain);
-		answer.degree.push(1);
-	}
+	if(remain % currentNum == 0) if(recInAnswer()) return answer;
+	
+	currentNum = 1;
+	do{
+		currentNum += 2;
+		if(remain % currentNum != 0) continue;
+		if(recInAnswer()) return answer;
+	}while(sqrtRemain >= currentNum);
+
+	answer.factor.push(remain);
+	answer.degree.push(1);
 	return answer;
+
+	function recInAnswer(){
+		let degree = 0;
+		do{
+			remain /= currentNum;
+			degree++;
+		}while(remain % currentNum == 0);
+		answer.factor.push(currentNum);
+		answer.degree.push(degree);
+		if(remain == 1) return true;
+		sqrtRemain = sqRound(remain);
+		return false;
+	}
 
 	function sqRound(x){
 		return Math.ceil(Math.sqrt(x));
