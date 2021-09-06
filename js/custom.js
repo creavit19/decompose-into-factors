@@ -8,7 +8,7 @@ function decomposeIntoFactors(num){
 		factor : [],
 		degree : []
 	}
-	if(num == 1){answer.factor[0] = 1; return answer};
+	if(num == 1){answer.factor[0] = 1; answer.degree[0] = 1; return answer};
 
 	answer.number = num;
 	let remain = num;
