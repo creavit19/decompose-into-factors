@@ -12,16 +12,27 @@ function decomposeIntoFactors(num){
 	answer.number = num;
 	let remain = num;
 	let sqrtRemain = sqRound(remain);
-	let currentNum = 2;
+	let currentNum = 1;
+  let primeNumbers = [2, 3, 5, 7, 11];
 
-	if(remain % currentNum == 0) if(recInAnswer()) return answer;
+  for (currentNum of primeNumbers) {
+    if(remain % currentNum == 0) if(recInAnswer()) return answer;
+  }
 	
-	currentNum = 1;
-	do{
-		currentNum += 2;
+	do {
+		
+    currentNum++;
+    currentNum++;
+    
+    if(currentNum % 3 == 0) continue;
+    if(currentNum % 5 == 0) continue;
+    if(currentNum % 7 == 0) continue;
+    if(currentNum % 11 == 0) continue;
+
 		if(remain % currentNum != 0) continue;
 		if(recInAnswer()) return answer;
-	}while(sqrtRemain >= currentNum);
+
+	} while(sqrtRemain >= currentNum);
 
 	answer.factor.push(remain);
 	answer.degree.push(1);
