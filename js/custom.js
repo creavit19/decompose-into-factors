@@ -1,6 +1,7 @@
 function decomposeIntoFactors(num){
 	/*
-	Функция возвращает объект содержащий число и два массива с множителями и их степенями
+	* Функция возвращает объект содержащий число и два массива с множителями и их степенями
+  * https://creavit19.github.io/decompose-into-factors/
 	*/
 	let answer = {
 		number : 1,
