@@ -14,21 +14,23 @@ function decomposeIntoFactors(num){
 	let remain = num;
 	let sqrtRemain = sqRound(remain);
 	let currentNum = 1;
-  let primeNumbers = [2, 3, 5, 7, 11];
+  let primeNumbers = [2, 3, 5, 7, 11, 13, 17, 19];
 
   for (currentNum of primeNumbers) {
     if(remain % currentNum == 0) if(recInAnswer()) return answer;
   }
 	
-	do {
+  do {
 		
-    currentNum++;
-    currentNum++;
+    currentNum += 2;
     
     if(currentNum % 3 == 0) continue;
     if(currentNum % 5 == 0) continue;
     if(currentNum % 7 == 0) continue;
     if(currentNum % 11 == 0) continue;
+    if(currentNum % 13 == 0) continue;
+    if(currentNum % 17 == 0) continue;
+    if(currentNum % 19 == 0) continue;
 
 		if(remain % currentNum != 0) continue;
 		if(recInAnswer()) return answer;
